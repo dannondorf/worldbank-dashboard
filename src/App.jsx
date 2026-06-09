@@ -7,8 +7,11 @@ function App() {
   const [data, setData] = useState(null);
 
   async function loadData() {
-    const response = await fetch('https://api.worldbank.org/v2/country/USA/indicator/NY.GDP.MKTP.CD?format=json');
-    const data = await response.json();
+    const response = await fetch(
+      'https://api.worldbank.org/v2/country/USA/indicator/NY.GDP.MKTP.CD?format=json&per_page=1000'
+    );
+    const json = await response.json();
+    console.log(json[0]);
     setData(json[1]);
   }
 
