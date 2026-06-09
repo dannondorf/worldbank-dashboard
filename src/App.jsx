@@ -12,7 +12,7 @@ function App() {
   return (
     <div>
       <h1>Global Indicators</h1>
-      <button onClick={loadData}>Load Data</button>
+      <button onClick={loadData}>Load data</button>
     </div>
   )
 }
