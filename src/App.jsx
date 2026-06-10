@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './App.css'
-
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 
 function App() {
@@ -19,7 +19,29 @@ function App() {
     <div>
       <h1>Global Indicators</h1>
       <button onClick={loadData}>Load data</button>
-      {data && <p>Loaded {data.length} records</p>}
+      {data && (
+        <div>
+          <ResponsiveContainer width="100%" height={400}> 
+            <LineChart width={700} height={400} data={data}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Tooltip />
+              <Line type="monotone" dataKey="value" stroke="#8884d8" />
+            </LineChart>
+          </ResponsiveContainer>
+            <div>
+              <p>Loaded {data.length} records</p>
+              <ul>
+                {data.map(record => (
+                  <li key={record.date}>
+                    {record.date}: {record.value}
+                  </li>
+                ))}
+              </ul>
+            </div>
+        </div>
+      )}
     </div>
   )
 }
