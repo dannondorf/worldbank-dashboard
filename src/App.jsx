@@ -11,8 +11,8 @@ function App() {
       'https://api.worldbank.org/v2/country/USA/indicator/NY.GDP.MKTP.CD?format=json&per_page=1000'
     );
     const json = await response.json();
-    console.log(json[0]);
-    setData(json[1]);
+    const records  = json[1].sort((a, b) => Number(a.date) - Number(b.date));
+    setData(records);
   }
 
   return (
