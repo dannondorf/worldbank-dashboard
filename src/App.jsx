@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -26,28 +26,31 @@ function formatCompact(value) {
 };
 
 function App() {
-  const [country, setCountry] = useState(country);
-  setCountry(COUNTRIES[0]);
-
+  const [country, setCountry] = useState('USA');
   const [data, setData] = useState(null);
-  async function loadData() {
-    const response = await fetch(
-      'https://api.worldbank.org/v2/country/`{$country.code}`/indicator/NY.GDP.MKTP.CD?format=json&per_page=1000'
-    );
-    const json = await response.json();
-    const records  = json[1].sort((a, b) => Number(a.date) - Number(b.date));
-    setData(records);
-  }
-
+  
+  {useEffect(() => {
+      async function loadData() {
+        const response = await fetch(
+          `https://api.worldbank.org/v2/country/${country}/indicator/NY.GDP.MKTP.CD?format=json&per_page=1000`
+        );
+        const json = await response.json();
+        const records  = json[1].sort((a, b) => Number(a.date) - Number(b.date));
+        setData(records);
+      }
+      loadData();
+    }, [country])}
+  
   return (
     <div>
       <h1>Global Indicators</h1>
-      <button onClick={loadData}>Load data</button>
-      {country && (
-        <select value={COUNTRIES}>{COUNTRIES.map(country => (
-          <option key={country.code}>{country.name}</option>))}
-        </select>)
-      }
+      <select value={country} onChange={(event) => setCountry(event.target.value)}>
+        {COUNTRIES.map((c) => (
+        <option key={c.code} value={c.code}>
+          {c.name}
+        </option>
+      ))}
+      </select>
       {data && (
         <div>
           <ResponsiveContainer width="100%" height={400}> 
