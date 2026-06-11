@@ -46,8 +46,17 @@ function formatCompact(value, format) {
 function toTimeSeries(records) {
   const byYear = {};
 
+  for (const record of records) {
+    const year = record.date;
+    const countryName = record.country.value;
+    if (!byYear[year]) {
+      byYear[year] = { year: year};
+    }
+    byYear[year][countryName] = record.value;
+  }
+  return Object.values(byYear).sort((a, b) => Number(a.year) - Number(b.year));
 }
-  
+
 
 
 function App() {
@@ -74,7 +83,8 @@ function App() {
           `https://api.worldbank.org/v2/country/${countries.join(';')}/indicator/${indicator}?format=json&per_page=1000`
         );
         const json = await response.json();
-        const records  = json[1].sort((a, b) => Number(a.date) - Number(b.date));
+        const records  = toTimeSeries(json[1]);
+        console.log(records);
         setData(records);
       }
       loadData();
@@ -102,11 +112,11 @@ function App() {
       ))}
       </select>
      
-        <div style={{position: "relative", paddingTop: "20px"}}>
+        <div style={{position: "relative", paddingTop: "20px", paddingRight: "60px"}}>
           <ResponsiveContainer width="100%" height={400}> 
-            <LineChart data={data}>
+            <LineChart data={data} >
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
+              <XAxis dataKey="year" />
               <YAxis tickFormatter={(value) => formatCompact(value, currentIndicator.format)} />
               <Line type="monotone" dataKey="value" stroke="#8884d8" />
             </LineChart>
