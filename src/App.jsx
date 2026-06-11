@@ -49,10 +49,12 @@ function toTimeSeries(records) {
   for (const record of records) {
     const year = record.date;
     const countryName = record.country.value;
+    const countryCode = record.recordiso3code.value;
     if (!byYear[year]) {
       byYear[year] = { year: year};
     }
     byYear[year][countryName] = record.value;
+    byYear[year][countryCode] = record.recordiso3code;
   }
   return Object.values(byYear).sort((a, b) => Number(a.year) - Number(b.year));
 }
