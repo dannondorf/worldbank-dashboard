@@ -45,18 +45,21 @@ function formatCompact(value, format) {
 
 function toTimeSeries(records) {
   const byYear = {};
-
+  const names = [];
   for (const record of records) {
     const year = record.date;
     const countryName = record.country.value;
-    const countryCode = record.recordiso3code.value;
+  
+    if (!names.includes(countryName)){
+      names.push(countryName);
+    }
     if (!byYear[year]) {
       byYear[year] = { year: year};
     }
     byYear[year][countryName] = record.value;
-    byYear[year][countryCode] = record.recordiso3code;
   }
-  return Object.values(byYear).sort((a, b) => Number(a.year) - Number(b.year));
+  const rows = Object.values(byYear).sort((a, b) => Number(a.year) - Number(b.year));
+  return {rows, names};
 }
 
 
