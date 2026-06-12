@@ -10,6 +10,9 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
+import { formatCompact } from './utils/formatCompact';
+import { toTimeSeries } from "./utils/toTimeSeries";
+import { fetchIndicator } from "./api/worldBank";
 
 const COUNTRIES = [
   { code: "USA", name: "United States" },
@@ -28,52 +31,7 @@ const INDICATORS = [
 
 const COLORS = ["#2563eb", "#dc2626", "#059669", "#d97706", "#7c3aed"];
 
-function formatCompact(value, format) {
-  let sign = "";
-  let suffix = "";
-  if (format === "currency") {
-    sign = "$";
-  }
-  if (format === "percent") {
-    suffix = "%";
-  }
-  if (format === "decimal") {
-    suffix = "yrs";
-  }
-  if (value >= 1e12) {
-    let newValue = value / 1e12;
-    return `${sign}${newValue.toFixed(1)}T${suffix}`;
-  } else if (value >= 1e9) {
-    let newValue = value / 1e9;
-    return `${sign}${newValue.toFixed(1)}B${suffix}`;
-  } else if (value >= 1e6) {
-    let newValue = value / 1e6;
-    return `${sign}${newValue.toFixed(1)}M${suffix}`;
-  } else {
-    return `${sign}${value.toFixed(1)}${suffix}`;
-  }
-}
 
-function toTimeSeries(records) {
-  const byYear = {};
-  const names = [];
-  for (const record of records) {
-    const year = record.date;
-    const countryName = record.country.value;
-
-    if (!names.includes(countryName)) {
-      names.push(countryName);
-    }
-    if (!byYear[year]) {
-      byYear[year] = { year: year };
-    }
-    byYear[year][countryName] = record.value;
-  }
-  const rows = Object.values(byYear).sort(
-    (a, b) => Number(a.year) - Number(b.year),
-  );
-  return { rows, names };
-}
 
 function App() {
   const [countries, setCountries] = useState([]);
@@ -92,20 +50,6 @@ function App() {
     );
   }
 
-  async function fetchWithRetry(url, attempts = 3) {
-    for (let i = 0; i < attempts; i++) {
-      try {
-        const response = await fetch(url);
-        if (!response.ok)
-          throw new Error(`World Bank API returned ${response.status}`);
-        return await response.json();
-      } catch (err) {
-        if (i === attempts - 1) throw err; // out of tries — give up
-        await new Promise((r) => setTimeout(r, 600)); // pause, then retry
-      }
-    }
-  }
-
   useEffect(() => {
     if (countries.length === 0) {
       setData([]);
@@ -115,18 +59,14 @@ function App() {
     }
 
     let cancelled = false;
-
     const timer = setTimeout(() => {
     setLoading(true);
     setError(null);
-
     async function loadData() {
       try {
-        const json = await fetchWithRetry(
-          `https://api.worldbank.org/v2/country/${countries.join(";")}/indicator/${indicator}?format=json&per_page=1000`,
-        );
+        const records =  await fetchIndicator(countries, indicator);
         if (cancelled) return;
-        const { rows, names } = toTimeSeries(json[1] || []);
+        const { rows, names } = toTimeSeries(records);
         setData(rows);
         setCountryNames(names);
       } catch (err) {
@@ -138,15 +78,14 @@ function App() {
         if (!cancelled) setLoading(false);
       }
     }
-
     loadData();
   }, 400);
-
   return () => {
     cancelled = true;
     clearTimeout(timer);
   };
 }, [countries, indicator]);
+
 
   return (
     <div>
