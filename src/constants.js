@@ -1,10 +1,10 @@
 
 export const COUNTRIES = [
-  { code: "USA", name: "United States" },
-  { code: "CHN", name: "China" },
-  { code: "JPN", name: "Japan" },
-  { code: "DEU", name: "Germany" },
-  { code: "IND", name: "India" },
+  { code: 'USA', name: 'United States', color: '#65DEF1' },
+  { code: 'CHN', name: 'China',         color: '#F5B700' },
+  { code: 'JPN', name: 'Japan',         color: '#B07CFF' },
+  { code: 'DEU', name: 'Germany',       color: '#34E0A1' },
+  { code: 'IND', name: 'India',         color: '#FF6A45' },
 ];
 
 export const INDICATORS = [

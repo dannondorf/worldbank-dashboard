@@ -1,0 +1,36 @@
+
+.indicatorWrap {
+    position: relative;
+}
+
+.indicator {
+    appearance: none;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--paper);
+    background: var(--ink-card);
+    border: 1px solid var(--hair-strong);
+    border-radius: 8px;
+    padding: 10px 38px 10px 14px;
+    cursor: pointer;
+}
+
+.indicator:focus-visible {
+    outline: 2px solid var(--cyan);
+    outline-offset: 2px;
+}
+
+.indicatorWrap::after {
+    content: "";
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    width: 7px;
+    height: 7px;
+    border-right: 1.5px solid var(--slate-2);
+    border-bottom: 1.5px solid var(--slate-2);
+    transform: translateY(-65%) rotate(45deg);
+    pointer-events: none;
+}

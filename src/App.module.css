@@ -1,0 +1,14 @@
+
+.shell {
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    margin: 26px 0 18px;
+    flex-wrap: wrap;
+}
