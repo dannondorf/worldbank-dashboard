@@ -2,7 +2,7 @@
 .shell {
   max-width: 1180px;
   margin: 0 auto;
-  height: calc(100svh - 64px);   
+  height: calc(100svh - 50px);   
   display: flex;
   flex-direction: column;
 }
