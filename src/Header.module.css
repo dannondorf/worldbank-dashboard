@@ -68,5 +68,5 @@
 @media (orientation: landscape) and (max-height: 600px) {
   .header { padding-bottom: 8px; }
   .mark   { font-size: 20px; }
-  .meta   { display: none; }   /* the WORLD BANK · LIVE line is the most expendable bit here */
+  /* .meta   { display: none; }    */
 }
