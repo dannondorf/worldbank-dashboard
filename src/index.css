@@ -26,7 +26,7 @@ body {
     font-family: var(--font-body);
     background: radial-gradient(1200px 600px at 78% -10%, rgba(101, 222, 241, 0.06), transparent 60%), radial-gradient(900px 500px at 0% 110%, rgba(245, 183, 0, 0.05), transparent 55%), var(--ink);
     color: var(--paper);
-    min-height: 100vh;
+    min-height: 100dvh;
     -webkit-font-smoothing: antialiased;
     padding: 32px clamp(20px, 5vw, 64px);
 }

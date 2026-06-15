@@ -2,7 +2,7 @@
 .shell {
   max-width: 1180px;
   margin: 0 auto;
-  height: calc(100dvh - 64px);   /* was min-height — now definite */
+  height: calc(100svh - 64px);   /* was min-height — now definite */
   display: flex;
   flex-direction: column;
 }
@@ -14,4 +14,8 @@
     gap: 24px;
     margin: 26px 0 18px;
     flex-wrap: wrap;
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+  .controls { margin: 8px 0; gap: 10px; }
 }

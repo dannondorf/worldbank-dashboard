@@ -33,7 +33,7 @@ export function DataChart({ data, countryNames, loading, error, format, label })
       </div>
         <div className={styles.chartBox}>
             <ResponsiveContainer width="100%" height="100%">
-                <ComposedChart data={data} margin={{ top: 0, right: 8, bottom: 0, left: 18}}>
+                <ComposedChart data={data} margin={{ top: 0, right: 8, bottom: 0, left: 21}}>
                     <defs>
                         {COUNTRIES.map((c) => (
                             <linearGradient key={c.code} id={`grad-${c.code}`} x1="0" y1="0" x2="0" y2="1">

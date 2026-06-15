@@ -5,7 +5,7 @@
     background: linear-gradient(180deg, var(--ink-card), var(--ink-panel));
     border: 1px solid var(--hair);
     border-radius: 16px;
-    padding:26px 20px 18px;
+    padding:24px 20px 18px;
     position: relative;
     overflow: hidden;
     flex: 1;
@@ -97,5 +97,8 @@
 }
 
 @media (orientation: landscape) and (max-height: 600px) {
-  .card { padding-top: 12px; }
+  .card     { padding-top: 16px; padding-bottom: 10px; }
+  .cardHead { margin-bottom: 4px; }
+  .chartBox { min-height: 120px; }   /* let it shrink into the scraps */
+  .source   { display: none; }       /* drop the caption on tiny screens */
 }
