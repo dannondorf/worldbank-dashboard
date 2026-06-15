@@ -1,7 +1,10 @@
 
 .shell {
-    max-width: 1180px;
-    margin: 0 auto;
+  max-width: 1180px;
+  margin: 0 auto;
+  height: calc(100dvh - 64px);   /* was min-height — now definite */
+  display: flex;
+  flex-direction: column;
 }
 
 .controls {

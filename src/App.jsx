@@ -13,7 +13,10 @@ function App() {
   const [indicator, setIndicator] = useState("NY.GDP.MKTP.CD");
   const currentIndicator = INDICATORS.find((i) => i.code === indicator);
   const { data, countryNames, loading, error } = useWorldBankData(countries, indicator);
-  
+  const range = data.length
+    ? `${data[0].year}–${data[data.length - 1].year}`
+    : null;
+
   function toggleCountry(code) {
     setCountries((existing) =>
       existing.includes(code)
@@ -21,10 +24,11 @@ function App() {
         : [...existing, code],
     );
   }
+
   
   return (
       <div className={styles.shell}>
-        <Header />
+        <Header range={range} />
         <div className={styles.controls}>
           <CountryPicker countries={countries} onToggle={toggleCountry} />
           <IndicatorSelect indicator={indicator} onChange={setIndicator} />
