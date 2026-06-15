@@ -32,5 +32,5 @@ body {
 }
 
 @media (orientation: landscape) and (max-height: 600px) {
-  body {padding-top: 10px;}  
+  body {padding-top: 6px;}  
 }
