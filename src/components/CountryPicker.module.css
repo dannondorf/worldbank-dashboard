@@ -51,3 +51,8 @@
     outline: 2px solid var(--cyan);
     outline-offset: 2px;
 }
+
+@media (orientation: landscape) and (max-height: 600px) {
+  .chips { gap: 6px; }
+  .chip  { padding: 4px 10px; font-size: 11px; gap: 7px; }
+}
