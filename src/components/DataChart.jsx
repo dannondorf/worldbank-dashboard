@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from 'react';
 import {
   ComposedChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
@@ -7,6 +8,7 @@ import styles from './DataChart.module.css';
 
 
 function ChartTooltip({ active, payload, label, format }) {
+   
   if (!active || !payload?.length) return null;
   return (
     <div className={styles.tooltip}>
@@ -24,16 +26,32 @@ function ChartTooltip({ active, payload, label, format }) {
   );
 }
 
-
 export function DataChart({ data, countryNames, loading, error, format, label }) {
+    const [showTip, setShowTip] = useState(true);
+    const chartRef = useRef(null);
+
+    useEffect(() => {
+        function dismissOnOutsideTap(e) {
+        if (chartRef.current && !chartRef.current.contains(e.target)) {
+            setShowTip(false);          
+         }
+        }
+        document.addEventListener('pointerdown', dismissOnOutsideTap);
+        return () => document.removeEventListener('pointerdown', dismissOnOutsideTap);
+    }, []);
+
     return (
     <div className={styles.card}>
       <div className={styles.cardHead}>
         <div className={styles.cardTitle}>{label}</div>
       </div>
-        <div className={styles.chartBox}>
+        <div className={styles.chartBox} ref={chartRef}>
             <ResponsiveContainer width="100%" height="100%">
-                <ComposedChart data={data} margin={{ top: 0, right: 8, bottom: 0, left: 21}}>
+                <ComposedChart 
+                    data={data} 
+                    margin={{ top: 0, right: 8, bottom: 0, left: 21}}
+                    onMouseMove={() => { if (!showTip) setShowTip(true); }}
+                    >
                     <defs>
                         {COUNTRIES.map((c) => (
                             <linearGradient key={c.code} id={`grad-${c.code}`} x1="0" y1="0" x2="0" y2="1">
@@ -60,6 +78,7 @@ export function DataChart({ data, countryNames, loading, error, format, label })
                         width={48}
                     />
                     <Tooltip
+                        active={showTip ? undefined : false}
                         content={<ChartTooltip format={format} />}
                         cursor={{ stroke: 'rgba(102, 106, 134, 0.34)', strokeDasharray: '3 4' }}
                     />
